@@ -9,7 +9,7 @@ from app.core.security import get_current_user
 from app.core.database import get_database
 from app.models.user import User
 from app.models.chat import ChatSession, ChatMessage, ChatMessageCreate, ChatMessageResponse, ChatSessionResponse, MessageRole
-from app.services.chatbot_service import generate_chat_response
+from app.ai.chatbot import generate_chat_response
 import logging
 
 logger = logging.getLogger("medivision.chatbot")

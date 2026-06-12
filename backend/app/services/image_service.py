@@ -7,7 +7,6 @@ import os
 from fastapi import UploadFile
 from PIL import Image
 import io
-import imghdr
 
 # Allowed file types
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".dcm"}
@@ -17,16 +16,12 @@ MAX_FILE_SIZE = 25 * 1024 * 1024  # 25MB
 
 def validate_image(file: UploadFile) -> tuple[bool, str]:
     """Validate uploaded image file."""
-    # Check file extension
     filename = file.filename or ""
     ext = os.path.splitext(filename)[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         return False, f"Invalid file type. Allowed: {', '.join(ALLOWED_EXTENSIONS)}"
-
-    # Check content type
     if file.content_type and file.content_type not in ALLOWED_MIME_TYPES:
         return False, f"Invalid MIME type: {file.content_type}"
-
     return True, ""
 
 
@@ -34,12 +29,13 @@ async def save_upload_file(file: UploadFile, directory: str, filename: str) -> s
     """Save uploaded file to disk."""
     os.makedirs(directory, exist_ok=True)
     file_path = os.path.join(directory, filename)
-
     content = await file.read()
 
-    # Verify it's actually an image
-    img_type = imghdr.what(None, h=content)
-    if img_type not in ("jpeg", "png") and not filename.endswith(".dcm"):
+    # Verify it's actually an image using PIL
+    try:
+        img = Image.open(io.BytesIO(content))
+        img.verify()
+    except Exception:
         raise ValueError("File is not a valid image")
 
     # Check file size
@@ -48,7 +44,6 @@ async def save_upload_file(file: UploadFile, directory: str, filename: str) -> s
 
     with open(file_path, "wb") as f:
         f.write(content)
-
     return file_path
 
 
@@ -58,22 +53,19 @@ def preprocess_image(image_path: str, target_size: tuple = (224, 224)) -> Image.
     import cv2
     import numpy as np
 
-    # Load image
     if image_path.endswith(".dcm"):
-        # Handle DICOM files
         try:
             import pydicom
             dcm = pydicom.dcmread(image_path)
             img_array = dcm.pixel_array
-            # Normalize to 0-255
             img_array = ((img_array - img_array.min()) / (img_array.max() - img_array.min()) * 255).astype(np.uint8)
             img = Image.fromarray(img_array)
             if img.mode != "RGB":
                 img = img.convert("RGB")
         except ImportError:
-            raise ValueError("pydicom not installed. Install with: pip install pydicom")
+            raise ValueError("pydicom not installed")
     else:
-        img = Image.open(image_path).convertrg
+        img = Image.open(image_path).convert("RGB")
 
     # Enhance contrast using CLAHE
     img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
@@ -82,14 +74,9 @@ def preprocess_image(image_path: str, target_size: tuple = (224, 224)) -> Image.
     lab[:, :, 0] = clahe.apply(lab[:, :, 0])
     img_cv = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
     img = Image.fromarray(cv2.cvtColor(img_cv, cv2.COLOR_BGR2RGB))
-
-    # Resize
     img = img.resize(target_size, Image.LANCZOS)
-
-    # Enhance sharpness
     enhancer = ImageEnhance.Sharpness(img)
     img = enhancer.enhance(1.5)
-
     return img
 
 

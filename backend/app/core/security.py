@@ -23,7 +23,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 ROLE_PATIENT = "patient"
 ROLE_DOCTOR = "doctor"
 ROLE_ADMIN = "admin"
-ROLES = [ROLE_PATIENT, ROLE_DOCTOR, ROROLE_ADMIN]
+ROLES = [ROLE_PATIENT, ROLE_DOCTOR, ROLE_ADMIN]
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
