@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediVision AI - Deployment Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0F172A;color:#F8FAFC;line-height:1.7;min-height:100vh;padding:3rem 1.5rem}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,#2563EB,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
+.sub{color:#94A3B8;margin-bottom:3rem}
+h2{font-size:1.3rem;font-weight:700;color:#2563EB;margin:2.5rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid #1E293B}
+h3{font-size:1.05rem;font-weight:600;color:#06B6D4;margin:1.5rem 0 .5rem}
+.step{background:#1E293B;border-radius:16px;padding:1.5rem;margin:1rem 0;border:1px solid #334155}
+.step-num{display:inline-flex;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#2563EB,#06B6D4);color:white;font-size:.8rem;font-weight:700;align-items:center;justify-content:center;margin-right:8px}
+code{background:#0F172A;border:1px solid #334155;padding:.2rem .5rem;border-radius:6px;font-size:.85rem;color:#06B6D4}
+pre{background:#0F172A;border:1px solid #334155;padding:1rem;border-radius:12px;overflow-x:auto;font-size:.82rem;margin:.75rem 0}
+a{color:#06B6D4;text-decoration:none}a:hover{text-decoration:underline}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:.75rem 1.5rem;background:linear-gradient(135deg,#2563EB,#06B6D4);color:white;font-weight:600;border-radius:12px;text-decoration:none;margin:.5rem .5rem .5rem 0;transition:all .3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.3);text-decoration:none}
+.btn-outline{background:transparent;border:2px solid #334155;color:#94A3B8}
+.btn-outline:hover{border-color:#06B6D4;color:#06B6D4}
+.warning{background:#FEF3C7;border:1px solid #FDE68A;color:#92400E;padding:1rem;border-radius:12px;margin:1rem 0;font-size:.9rem}
+.success{background:#DCFCE7;border:1px solid #86EFAC;color:#166534;padding:1rem;border-radius:12px;margin:1rem 0;font-size:.9rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{padding:.75rem;text-align:left;border-bottom:1px solid #1E293B;font-size:.9rem}
+th{color:#94A3B8;font-weight:600}
+.badge{display:inline-block;padding:2px 10px;border-radius:50px;font-size:.7rem;font-weight:600}
+.badge-free{background:#DCFCE7;color:#166534}
+.badge-paid{background:#FEF3C7;color:#92400E}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🚀 Deploy MediVision AI</h1>
+<p class="sub">Complete deployment guide — Frontend + Backend + Database</p>
+
+<div class="success">
+  ✅ Your project is ready at:<br>
+  <code>C:\Users\tejap\AppData\Local\hermes\projects\medivision-ai\</code><br>
+  70 files committed to Git.
+</div>
+
+<h2>Option 1: Quick Deploy (No GitHub needed)</h2>
+
+<div class="step">
+  <span class="step-num">1</span><strong>Deploy Frontend to Netlify (Free)</strong>
+  <p style="margin-top:.75rem">Go to <a href="https://app.netlify.com/drop" target="_blank">app.netlify.com/drop</a> and drag & drop the <code>preview.html</code> file. Your site will be live in seconds at a URL like <code>random-name.netlify.app</code>.</p>
+  <a href="https://app.netlify.com/drop" target="_blank" class="btn">📦 Deploy to Netlify</a>
+</div>
+
+<div class="step">
+  <span class="step-num">2</span><strong>Deploy Frontend to Vercel (Free, Best for Next.js)</strong>
+  <ol style="margin-top:.75rem;padding-left:1.25rem">
+    <li>Go to <a href="https://vercel.com/signup" target="_blank">vercel.com/signup</a> — sign up with GitHub</li>
+    <li>Install <code>gh</code> CLI or push code to GitHub first (see Option 2)</li>
+    <li>Import repo → Set root to <code>frontend/</code> → Deploy</li>
+  </ol>
+  <a href="https://vercel.com/new" target="_blank" class="btn">▲ Deploy to Vercel</a>
+</div>
+
+<h2>Option 2: Full Deploy (GitHub + Vercel + Render)</h2>
+
+<div class="step">
+  <span class="step-num">1</span><strong>Create GitHub Repository</strong>
+  <pre>cd C:\Users\tejap\AppData\Local\hermes\projects\medivision-ai
+
+# Install winget gh CLI first, or go to github.com/new
+# Then:
+git remote add origin https://github.com/YOUR_USERNAME/medivision-ai.git
+git branch -M main
+git push -u origin main</pre>
+  <a href="https://github.com/new" target="_blank" class="btn">➕ Create GitHub Repo</a>
+</div>
+
+<div class="step">
+  <span class="step-num">2</span><strong>Deploy Frontend to Vercel</strong>
+  <ol style="margin-top:.75rem;padding-left:1.25rem">
+    <li>Go to <a href="https://vercel.com/new" target="_blank">vercel.com/new</a></li>
+    <li>Import your GitHub repo</li>
+    <li>Framework: Next.js</li>
+    <li>Root directory: <code>frontend</code></li>
+    <li>Add env var: <code>NEXT_PUBLIC_API_URL</code> = your backend URL</li>
+    <li>Click Deploy ✅</li>
+  </ol>
+</div>
+
+<div class="step">
+  <span class="step-num">3</span><strong>Deploy Backend to Render</strong>
+  <ol style="margin-top:.75rem;padding-left:1.25rem">
+    <li>Go to <a href="https://render.com" target="_blank">render.com</a> — sign up free</li>
+    <li>Click "New Web Service"</li>
+    <li>Connect your GitHub repo</li>
+    <li>Root directory: <code>backend</code></li>
+    <li>Build: <code>pip install -r requirements.txt</code></li>
+    <li>Start: <code>uvicorn app.main:app --host 0.0.0.0 --port $PORT</code></li>
+    <li>Add env vars (see below) → Deploy</li>
+  </ol>
+  <a href="https://dashboard.render.com/web/new" target="_blank" class="btn">🚀 Deploy to Render</a>
+</div>
+
+<div class="step">
+  <span class="step-num">4</span><strong>Set Up MongoDB Atlas (Free)</strong>
+  <ol style="margin-top:.75rem;padding-left:1.25rem">
+    <li>Go to <a href="https://mongodb.com/atlas" target="_blank">mongodb.com/atlas</a></li>
+    <li>Create free M0 cluster</li>
+    <li>Create database user (save password!)</li>
+    <li>Network Access → Add IP: <code>0.0.0.0/0</code></li>
+    <li>Copy connection string → Add to Render env vars as <code>MONGODB_URL</code></li>
+  </ol>
+  <a href="https://mongodb.com/atlas/register" target="_blank" class="btn">🗄️ Create MongoDB</a>
+</div>
+
+<h2>Required Environment Variables</h2>
+
+<h3>Backend (Render)</h3>
+<table>
+<tr><th>Variable</th><th>Value</th></tr>
+<tr><td><code>MONGODB_URL</code></td><td>mongodb+srv://user:pass@cluster.mongodb.net/medivision</td></tr>
+<tr><td><code>SECRET_KEY</code></td><td>Any random string (min 32 chars)</td></tr>
+<tr><td><code>CORS_ORIGINS</code></td><td>Your Vercel frontend URL</td></tr>
+<tr><td><code>DEBUG</code></td><td>false</td></tr>
+</table>
+
+<h3>Frontend (Vercel)</h3>
+<table>
+<tr><th>Variable</th><th>Value</th></tr>
+<tr><td><code>NEXT_PUBLIC_API_URL</code></td><td>Your Render backend URL</td></tr>
+</table>
+
+<h2>Free Services Summary</h2>
+<table>
+<tr><th>Service</th><th>Component</th><th>Cost</th></tr>
+<tr><td>Vercel</td><td>Frontend (Next.js)</td><td><span class="badge badge-free">Free</span></td></tr>
+<tr><td>Render</td><td>Backend (FastAPI)</td><td><span class="badge badge-free">Free tier</span></td></tr>
+<tr><td>MongoDB Atlas</td><td>Database</td><td><span class="badge badge-free">Free 512MB</span></td></tr>
+<tr><td>Netlify</td><td>Static frontend</td><td><span class="badge badge-free">Free</span></td></tr>
+</table>
+
+<div class="warning">
+  ⚠️ <strong>Important:</strong> After deploying, update <code>CORS_ORIGINS</code> in backend with your actual frontend URL to allow API calls.
+</div>
+
+<h2>Quick Start (Easiest Path)</h2>
+<ol style="padding-left:1.25rem">
+  <li><strong>Frontend:</strong> Go to <a href="https://app.netlify.com/drop">netlify.com/drop</a> → drag <code>preview.html</code> → Done! ✅</li>
+  <li><strong>Backend:</strong> Push to GitHub → Deploy on Render → Add MongoDB → Done! ✅</li>
+</ol>
+
+<div style="text-align:center;margin-top:3rem;padding:2rem;background:linear-gradient(135deg,#1E293B,#0F172A);border-radius:20px;border:1px solid #334155">
+  <h3 style="color:white;margin-bottom:1rem">🎉 Your MediVision AI platform is ready to deploy!</h3>
+  <a href="https://app.netlify.com/drop" target="_blank" class="btn">📦 Quick Deploy (Netlify)</a>
+  <a href="https://vercel.com/new" target="_blank" class="btn">▲ Full Deploy (Vercel)</a>
+  <a href="https://dashboard.render.com/web/new" target="_blank" class="btn">🚀 Backend (Render)</a>
+</div>
+
+</div>
+</body>
+</html>
