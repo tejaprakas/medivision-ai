@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediVision AI - Preview</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root{--blue:#2563EB;--cyan:#06B6D4;--dark:#0F172A;--slate:#64748B;--light:#F8FAFC;--white:#FFFFFF;--gradient:linear-gradient(135deg,#2563EB 0%,#06B6D4 100%)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--dark);background:var(--white);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(148,163,184,.15);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-icon{width:38px;height:38px;border-radius:12px;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.875rem;font-weight:500;color:var(--slate);transition:color .2s}
+.nav-links a:hover{color:var(--blue)}
+.nav-cta{padding:.6rem 1.5rem;background:var(--gradient);color:white!important;font-size:.875rem;font-weight:600;border-radius:12px;display:inline-flex;align-items:center;gap:6px;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(37,99,235,.3)}
+.hamburger{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--dark)}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:block}nav{padding:0 1.25rem}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;background:linear-gradient(180deg,#F0F7FF 0%,#ECFDF5 50%,#FFFFFF 100%);padding:7rem 2.5rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:700px;height:700px;background:radial-gradient(circle,rgba(37,99,235,.08) 0%,transparent 70%);border-radius:50%}
+.hero-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.15);border-radius:50px;font-size:.8rem;font-weight:600;color:var(--blue);margin-bottom:1.5rem}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.hero h1{font-size:clamp(2.5rem,5vw,3.8rem);font-weight:900;line-height:1.1;margin-bottom:1.25rem;letter-spacing:-.02em}
+.hero h1 .gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{font-size:1.15rem;color:var(--slate);margin-bottom:2rem;max-width:520px;line-height:1.8}
+.hero-buttons{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem}
+.btn-primary{padding:.85rem 1.75rem;background:var(--gradient);color:white;font-size:1rem;font-weight:600;border-radius:14px;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;transition:all .3s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(37,99,235,.35)}
+.btn-secondary{padding:.85rem 1.75rem;background:white;color:var(--dark);font-size:1rem;font-weight:600;border-radius:14px;display:inline-flex;align-items:center;gap:8px;border:1.5px solid #E2E8F0;transition:all .3s}
+.btn-secondary:hover{border-color:var(--blue);box-shadow:0 8px 25px rgba(0,0,0,.08)}
+.hero-stats{display:flex;gap:2.5rem}
+.stat{display:flex;align-items:center;gap:10px}
+.stat-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#EFF6FF,#DBEAFE);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.stat-value{font-size:1.35rem;font-weight:800;color:var(--dark)}
+.stat-label{font-size:.75rem;color:var(--slate);font-weight:500}
+
+/* Hero Visual */
+.hero-visual{position:relative}
+.hero-card{background:rgba(255,255,255,.9);backdrop-filter:blur(20px);border-radius:24px;border:1px solid rgba(226,232,240,.8);box-shadow:0 25px 60px rgba(0,0,0,.08);padding:1.75rem;position:relative}
+.browser-bar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem}
+.browser-dot{width:10px;height:10px;border-radius:50%}
+.ecg-container{background:#F8FAFC;border-radius:16px;padding:1.25rem;margin-bottom:1.25rem;border:1px solid #E2E8F0}
+.ecg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.ecg-title{font-size:.85rem;font-weight:600;color:var(--dark)}
+.ecg-live{font-size:.7rem;padding:3px 10px;background:#DCFCE7;color:#16A34A;border-radius:50px;font-weight:600}
+svg.ecg-line{width:100%;height:70px}
+.result-box{background:linear-gradient(135 deg,#EFF6FF,#F0F9FF);border-radius:14px;padding:1.25rem;border:1px solid #DBEAFE;display:flex;justify-content:space-between;align-items:center}
+.result-label{font-size:.75rem;color:var(--slate)}
+.result-value{font-size:1.15rem;font-weight:700;color:var(--dark)}
+
+.float-card{position:absolute;background:white;border-radius:16px;border:1px solid #E2E8F0;padding:.85rem 1.15rem;display:flex;align-items:center;gap:10px;box-shadow:0 12px 35px rgba(0,0,0,.1);animation:float 6s ease-in-out infinite;font-size:.8rem;font-weight:600}
+.float-card .icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.float-1{top:-20px;right:-20px;animation-delay:0s}
+.float-1 .icon{background:#DCFCE7}
+.float-2{bottom:-15px;left:-25px;animation-delay:2s}
+.float-2 .icon{background:#EFF6FF}
+.float-3{top:45%;right:-40px;animation-delay:4s}
+.float-3 .icon{background:#F0F9FF}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.disclaimer{position:absolute;bottom:0;left:0;right:0;background:#FEF3C7;border-top:1px solid #FDE68A;padding:10px 2.5rem;text-align:center;font-size:.75rem;color:#92400E;font-weight:500}
+
+/* SECTIONS */
+.section{padding:6rem 2.5rem;max-width:1280px;margin:0 auto}
+.section-alt{background:var(--light)}
+.section-header{text-align:center;margin-bottom:4rem}
+.section-tag{display:inline-block;padding:6px 16px;background:rgba(37,99,235,.08);color:var(--blue);border-radius:50px;font-size:.8rem;font-weight:600;margin-bottom:1rem}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:1rem;letter-spacing:-.02em}
+.section-title .gradient{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-desc{font-size:1.1rem;color:var(--slate);max-width:600px;margin:0 auto}
+
+/* FEATURE CARDS */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem}
+.feature-card{background:white;border:1px solid #E2E8F0;border-radius:20px;padding:1.75rem;transition:all .3s}
+.feature-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,.08);border-color:transparent}
+.feature-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#EFF6FF,#DBEAFE);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem}
+.feature-card h3{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.feature-card p{font-size:.85rem;color:var(--slate);line-height:1.6}
+
+/* WORKFLOW */
+.workflow-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;position:relative}
+@media(max-width:900px){.workflow-grid{grid-template-columns:1fr 2}}
+.step-card{text-align:center;padding:1.5rem;background:white;border:1px solid #E2E8F0;border-radius:20px;transition:all .3s}
+.step-card:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(0,0,0,.08)}
+.step-num{width:52px;height:52px;border-radius:16px;background:var(--gradient);color:white;font-size:1.1rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 8px 25px rgba(37,99,235,.25)}
+.step-card h4{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+.step-card p{font-size:.78rem;color:var(--slate)}
+.step-detail{font-size:.7rem;color:var(--blue);font-weight:600;margin-top:.4rem}
+
+/* AI MODELS */
+.models-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+@media(max-width:768px){.models-grid{grid-template-columns:1fr}}
+.model-panel{border-radius:24px;padding:2rem;border:1px solid}
+.model-panel.blue{background:linear-gradient(135deg,#EFF6FF,#F0F9FF);border-color:#DBEAFE}
+.model-panel.purple{background:linear-gradient(135deg,#F5F3FF,#FAF5FF);border-color:#E9D5FF}
+.model-panel-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.model-panel-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:white}
+.blue .model-panel-icon{background:var(--blue)}
+.purple .model-panel-icon{background:#7C3AED}
+.model-list{display:flex;flex-direction:column;gap:.75rem}
+.model-item{background:white;border-radius:12px;padding:1rem 1.25rem;border:1px solid #E2E8F0}
+.model-item-top{display:flex;justify-content:space-between;align-items:center}
+.model-item-name{font-size:.9rem;font-weight:600}
+.model-tag{font-size:.7rem;padding:3px 10px;background:#EFF6FF;color:var(--blue);border-radius:50px;font-weight:600}
+.model-item-desc{font-size:.78rem;color:var(--slate);margin-top:4px}
+
+/* DASHBOARD CARDS */
+.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+@media(max-width:900px){.dash-grid{grid-template-columns:1fr}}
+.dash-card{border-radius:20px;padding:1.75rem;border:2px solid}
+.dash-card.blue{border-color:#BFDBFE;background:linear-gradient(180deg,#EFF6FF,#F8FAFC)}
+.dash-card.green{border-color:#A7F3D0;background:linear-gradient(180deg,#ECFDF5,#F8FAFC)}
+.dash-card.purple{border-color:#DDD6FE;background:linear-gradient(180deg,#F5F3FF,#F8FAFC)}
+.dash-card h3{font-size:1.1rem;font-weight:700;margin-bottom:1rem}
+.dash-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem}
+.metric{background:white;border-radius:10px;padding:.6rem;text-align:center;border:1px solid #E2E8F0}
+.metric-icon{font-size:.9rem;margin-bottom:2px}
+.metric-value{font-size:1.1rem;font-weight:800}
+.metric-label{font-size:.6rem;color:var(--slate)}
+.dash-features{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.dash-features li{font-size:.82rem;color:var(--slate);display:flex;align-items:center;gap:6px}
+.check{color:#10B981;font-weight:700;font-size:.9rem}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:960px;margin:0 auto}
+@media(max-width:768px){.pricing-grid{grid-template-columns:1fr}}
+.price-card{border-radius:24px;padding:2.5rem 2rem;text-align:center;border:2px solid #E2E8F0;background:white;position:relative;transition:all .3s}
+.price-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,.08)}
+.price-card.popular{background:var(--gradient);color:white;border-color:transparent;transform:scale(1.05);box-shadow:0 25px 50px rgba(37,99,235,.3)}
+.price-card.popular:hover{transform:scale(1.05) translateY(-5px)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#FBBF24;color:var(--dark);padding:4px 14px;border-radius:50px;font-size:.7rem;font-weight:700}
+.price-name{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.price-amount{font-size:2.8rem;font-weight:900;margin-bottom:.25rem}
+.price-amount span{font-size:1rem;font-weight:500;opacity:.7}
+.price-features{list-style:none;margin:1.5rem 0;display:flex;flex-direction:column;gap:.6rem}
+.price-features li{font-size:.85rem;display:flex;align-items:center;gap:8px}
+.price-cta{display:block;padding:.85rem;border-radius:14px;font-weight:600;font-size:.9rem;text-align:center;transition:all .3s}
+.price-card:not(.popular) .price-cta{background:var(--gradient);color:white}
+.price-card:not(.popular) .price-cta:hover{box-shadow:0 8px 25px rgba(37,99,235,.3)}
+.popular .price-cta{background:white;color:var(--blue)}
+.popular .price-cta:hover{box-shadow:0 8px 25px rgba(0,0,0,.2)}
+
+/* CTA */
+.cta-section{text-align:center;padding:6rem 2.5rem;background:var(--gradient);position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.cta-content{position:relative;z-index:1;max-width:700px;margin:0 auto}
+.cta-section h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;margin-bottom:1rem}
+.cta-section p{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2rem}
+.cta-buttons{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.btn-white{padding:.85rem 2rem;background:white;color:var(--blue);font-weight:600;border-radius:14px;display:inline-flex;align-items:center;gap:8px;transition:all .3s;font-size:1rem}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(0,0,0,.2)}
+.btn-ghost{padding:.85rem 2rem;background:rgba(255,255,255,.15);color:white;font-weight:600;border-radius:14px;border:2px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;gap:8px;font-size:1rem;transition:all .3s}
+.btn-ghost:hover{background:rgba(255,255,255,.25)}
+
+/* FOOTER */
+footer{background:#020617;color:rgba(255,255,255,.6);padding:4rem 2.5rem 2rem}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:2rem;margin-bottom:3rem}
+.footer-brand p{font-size:.85rem;margin-top:1rem;max-width:280px;line-height:1.7}
+.footer-col h4{font-size:.85rem;font-weight:700;color:white;margin-bottom:1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.footer-col a{font-size:.82rem;transition:color .2s}
+.footer-col a:hover{color:white}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.78rem}
+.footer-disclaimer{font-size:.7rem;color:#FBBF24;max-width:500px}
+
+@media(max-width:768px){
+  .hero-grid{grid-template-columns:1fr;text-align:center;padding-top:2rem}
+  .hero-desc{margin:0 auto 2rem}
+  .hero-buttons{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-visual{display:none}
+  .section{padding:4rem 1.25rem}
+  .features-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .features-grid{grid-template-columns:1fr}
+  .hero h1{font-size:2rem}
+  .hero-stats{flex-direction:column;gap:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">❤️</div>
+    MediVision AI
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#workflow">How It Works</a></li>
+    <li><a href="#models">AI Models</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Get Started Free →</a>
+  <button class="hamburger">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-badge"><span class="dot"></span> AI-Powered Healthcare Platform</div>
+      <h1>AI-Powered <span class="gradient">Heart Disease</span> Detection & Medical Assistant</h1>
+      <p class="hero-desc">Upload <strong>ECG, MRI, CT Scan or X-Ray</strong> images and receive intelligent AI-powered analysis, risk assessment, and medical explanations.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary">📤 Start Analysis →</button>
+        <button class="btn-secondary">💬 Talk to AI</button>
+        <button class="btn-secondary">📅 Book Consultation</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-icon">👥</div>
+          <div><div class="stat-value">50K+</div><div class="stat-label">Patients Screened</div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">🧠</div>
+          <div><div class="stat-value">125K+</div><div class="stat-label">AI Analyses</div></div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon">🏆</div>
+          <div>
+            <div class="stat-value" style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">97.8%</div>
+            <div class="stat-label">AI Accuracy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="browser-bar">
+          <div class="browser-dot" style="background:#F87171"></div>
+          <div class="browser-dot" style="background:#FBBF24"></div>
+          <div class="browser-dot" style="background:#34D399"></div>
+        </div>
+        <div class="ecg-container">
+          <div class="ecg-header">
+            <span class="ecg-title">ECG Analysis</span>
+            <span class="ecg-live">● Live</span>
+          </div>
+          <svg class="ecg-line" viewBox="0 0 400 70" preserveAspectRatio="none">
+            <path d="M0,35 L50,35 L60,15 L70,55 L80,35 L150,35 L160,10 L170,60 L180,35 L250,35 L260,20 L270,50 L280,35 L350,35 L360,5 L370,65 L380,35 L400,35" fill="none" stroke="url(#g1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#06B6D4"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="result-box">
+          <div><div class="result-label">Prediction</div><div class="result-value">Analysis Complete</div></div>
+          <div style="text-align:right"><div class="result-label">Confidence</div><div class="result-value" style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:1.3rem">97.3%</div></div>
+        </div>
+      </div>
+      <div class="float-card float-1"><div class="icon" style="background:#DCFCE7">✓</div><div>AI Verified<br><span style="font-size:.7rem;color:var(--slate);font-weight:400">Report ready</span></div></div>
+      <div class="float-card float-2"><div class="icon" style="background:#EFF6FF">🛡️</div><div>HIPAA Secure<br><span style="font-size:.7rem;color:var(--slate);font-weight:400">Encrypted</span></div></div>
+      <div class="float-card float-3"><div class="icon" style="background:#F0F9FF">💚</div><div>Heart Score<br><span style="font-size:.7rem;color:#06B6D4;font-weight:600">Good</span></div></div>
+    </div>
+  </div>
+  <div class="disclaimer">⚠️ Medical Disclaimer: AI-generated results are for educational and preliminary screening purposes only. Always consult a qualified healthcare professional.</div>
+</section>
+
+<!-- FEATURES + AI MODELS COMBINED -->
+<section class="section" id="features">
+  <div class="section-header">
+    <span class="section-tag">Platform Features</span>
+    <h2 class="section-title">Complete AI Healthcare <span class="gradient">Platform</span></h2>
+    <p class="section-desc">Everything you need for AI-powered heart disease detection, patient management, and medical consultations — powered by state-of-the-art AI models.</p>
+  </div>
+
+  <!-- Feature Cards -->
+  <div class="features-grid" style="margin-bottom:3rem">
+    <div class="feature-card"><div class="feature-icon">📈</div><h3>ECG Analysis</h3><p>Analyze electrocardiogram images for arrhythmia, AFib, and heart rhythm disorders.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔬</div><h3>MRI Analysis</h3><p>Detect structural heart abnormalities, cardiomyopathy, and valve disorders.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔍</div><h3>CT Scan Analysis</h3><p>Identify coronary artery disease, calcifications, and structural anomalies.</p></div>
+    <div class="feature-card"><div class="feature-icon">👁️</div><h3>X-Ray Analysis</h3><p>Screen for cardiomegaly, lung conditions, and chest abnormalities.</p></div>
+    <div class="feature-card"><div class="feature-icon">💓</div><h3>Heart Disease Prediction</h3><p>Ensemble AI models predict heart disease risk with confidence scores.</p></div>
+    <div class="feature-card"><div class="feature-icon">💬</div><h3>AI Medical Chatbot</h3><p>Powered by BioGPT — explain reports, answer questions, provide guidance.</p></div>
+    <div class="feature-card"><div class="feature-icon">📄</div><h3>PDF Report Generator</h3><p>Generate professional medical reports with findings and recommendations.</p></div>
+    <div class="feature-card"><div class="feature-icon">🕐</div><h3>Patient History Tracking</h3><p>Track all analyses, reports, and health trends over time.</p></div>
+    <div class="feature-card"><div class="feature-icon">🩺</div><h3>Doctor Dashboard</h3><p>Manage patients, review AI predictions, and provide clinical notes.</p></div>
+    <div class="feature-card"><div class="feature-icon">📅</div><h3>Appointment Scheduling</h3><p>Book consultations, video calls, and in-person appointments.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎙️</div><h3>Voice Assistant</h3><p>Speech-to-text and text-to-speech for hands-free interaction.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔔</div><h3>Emergency Alert System</h3><p>Critical findings trigger immediate notifications and alerts.</p></div>
+  </div>
+
+  <!-- AI Models inside Features -->
+  <div style="margin-top:3rem">
+    <div class="section-header" style="margin-bottom:2rem">
+      <span class="section-tag">AI Models</span>
+      <h2 class="section-title" style="font-size:clamp(1.5rem,3vw,2.2rem)">State-of-the-Art <span class="gradient">AI Models</span></h2>
+      <p class="section-desc" style="font-size:.95rem">Right tool for the right job — Vision models for images, Language models for text.</p>
+    </div>
+    <div class="models-grid">
+      <div class="model-panel blue">
+        <div class="model-panel-header">
+          <div class="model-panel-icon">👁️</div>
+          <div><strong>Image Analysis Models</strong><br><small style="color:var(--slate)">For ECG, MRI, CT Scan, X-Ray</small></div>
+        </div>
+        <div class="model-list">
+          <div class="model-item"><div class="model-item-top"><div class="model-item-name">Vision Transformer (ViT)</div><span class="model-tag">Google</span></div><div class="model-item-desc">Medical image classification with attention</div></div>
+          <div class="model-item"><div class="model-item-top"><div class="model-item-name">ResNet50</div><span class="model-tag">Microsoft</span></div><div class="model-item-desc">Deep residual learning for image recognition</div></div>
+          <div class="model-item"><div class="model-item-top"><div class="model-item-name">Custom CNN</div><span class="model-tag">Custom</span></div><div class="model-item-desc">Purpose-built for medical imaging</div></div>
+        </div>
+      </div>
+      <div class="model-panel purple">
+        <div class="model-panel-header">
+          <div class="model-panel-icon">💬</div>
+          <div><strong>Language Models</strong><br><small style="color:var(--slate)">For reports, Q&A, explanations</small></div>
+        </div>
+        <div class="model-list">
+          <div class="model-item"><div class="model-item-top"><div class="model-item-name">BioGPT</div><span class="model-tag">Microsoft</span></div><div class="model-item-desc">Medical text generation & report explanation</div></div>
+          <div class="model-item"><div class="model-item-top"><div class="model-item-name">BioBERT</div><span class="model-tag">DMIS Lab</span></div><div class="model-item-desc">Clinical NLP & medical entity recognition</div></div>
+          <div class="model-item"><div class="model-item-top"><div class="model-item-name">MedAlpaca</div><span class="model-tag">Open</span></div><div class="model-item-desc">Medical conversational AI for patient Q&A</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section class="section section-alt" id="workflow">
+  <div class="section-header">
+    <span class="section-tag">How It Works</span>
+    <h2 class="section-title">5-Step AI <span class="gradient">Analysis Pipeline</span></h2>
+  </div>
+  <div class="workflow-grid">
+    <div class="step-card"><div class="step-num">01</div><h4>Upload Image</h4><p>Upload ECG, MRI, CT Scan or X-Ray via drag & drop.</p><div class="step-detail">JPG, PNG, DICOM</div></div>
+    <div class="step-card"><div class="step-num">02</div><h4>AI Analysis</h4><p>ViT + ResNet50 ensemble models analyze your image.</p><div class="step-detail">Feature extraction</div></div>
+    <div class="step-card"><div class="step-num">03</div><h4>Get Results</h4><p>Receive prediction, confidence score, and risk assessment.</p><div class="step-detail">Low / Moderate / High / Critical</div></div>
+    <div class="step-card"><div class="step-num">04</div><h4>AI Explanation</h4><p>Chatbot explains findings and answers your questions.</p><div class="step-detail">Powered by BioGPT</div></div>
+    <div class="step-card"><div class="step-num">05</div><h4>Download Report</h4><p>Generate and download a professional PDF medical report.</p><div class="step-detail">Share with doctor</div></div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="section" id="dashboard">
+  <div class="section-header">
+    <span class="section-tag">Platform Dashboards</span>
+    <h2 class="section-title">Powerful <span class="gradient">Dashboards</span> for Every Role</h2>
+    <p class="section-desc">Tailored experiences for patients, doctors, and administrators — each with the tools they need.</p>
+  </div>
+  <div class="dash-grid">
+    <div class="dash-card blue">
+      <h3>🧑‍⚕️ Patient Dashboard</h3>
+      <div class="dash-metrics">
+        <div class="metric"><div class="metric-icon">❤️</div><div class="metric-value">85</div><div class="metric-label">Health Score</div></div>
+        <div class="metric"><div class="metric-icon">📄</div><div class="metric-value">12</div><div class="metric-label">Reports</div></div>
+        <div class="metric"><div class="metric-icon">🧠</div><div class="metric-value">8</div><div class="metric-label">Analyses</div></div>
+      </div>
+      <ul class="dash-features">
+        <li><span class="check">✓</span> Real-time Health Score tracking</li>
+        <li><span class="check">✓</span> Recent Reports & downloads</li>
+        <li><span class="check">✓</span> AI Chatbot conversation history</li>
+        <li><span class="check">✓</span> Upcoming Appointments</li>
+        <li><span class="check">✓</span> Instant Notifications</li>
+      </ul>
+    </div>
+    <div class="dash-card green">
+      <h3>👨‍⚕️ Doctor Dashboard</h3>
+      <div class="dash-metrics">
+        <div class="metric"><div class="metric-icon">👥</div><div class="metric-value">48</div><div class="metric-label">Patients</div></div>
+        <div class="metric"><div class="metric-icon">✓</div><div class="metric-value">7</div><div class="metric-label">Pending Reviews</div></div>
+        <div class="metric"><div class="metric-icon">⭐</div><div class="metric-value">4.9</div><div class="metric-label">Rating</div></div>
+      </div>
+      <ul class="dash-features">
+        <li><span class="check">✓</span> Assigned Patients overview</li>
+        <li><span class="check">✓</span> AI Predictions to review</li>
+        <li><span class="check">✓</span> Pending report reviews</li>
+        <li><span class="check">✓</span> Appointment Requests</li>
+        <li><span class="check">✓</span> Clinical notes & feedback</li>
+      </ul>
+    </div>
+    <div class="dash-card purple">
+      <h3>👑 Admin Dashboard</h3>
+      <div class="dash-metrics">
+        <div class="metric"><div class="metric-icon">👥</div><div class="metric-value">2.4K</div><div class="metric-label">Total Users</div></div>
+        <div class="metric"><div class="metric-icon">📊</div><div class="metric-value">8.9K</div><div class="metric-label">Reports Generated</div></div>
+        <div class="metric"><div class="metric-icon">📈</div><div class="metric-value">99.9%</div><div class="metric-label">System Uptime</div></div>
+      </div>
+      <ul class="dash-features">
+        <li><span class="check">✓</span> Total Users & growth metrics</li>
+        <li><span class="check">✓</span> AI Usage Analytics</li>
+        <li><span class="check">✓</span> Revenue & billing metrics</li>
+        <li><span class="check">✓</span> System Health monitoring</li>
+        <li><span class="check">✓</span> User management & roles</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section-alt" id="pricing">
+  <div class="section-header">
+    <span class="section-tag">Pricing</span>
+    <h2 class="section-title">Simple <span class="gradient">Pricing</span></h2>
+    <p class="section-desc">Start free, upgrade when you need more. No hidden fees.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-name">Free</div>
+      <div class="price-amount">₹0<span>/forever</span></div>
+      <ul class="price-features"><li>✓ 3 AI analyses/month</li><li>✓ Basic PDF reports</li><li>✓ AI chatbot access</li><li>✓ Patient dashboard</li></ul>
+      <a href="#" class="price-cta">Get Started</a>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">Most Popular</div>
+      <div class="price-name">Pro</div>
+      <div class="price-amount">₹999<span>/month</span></div>
+      <ul class="price-features"><li>✓ Unlimited analyses</li><li>✓ Advanced PDF reports</li><li>✓ Priority chatbot</li><li>✓ Doctor consultations</li><li>✓ Appointment booking</li><li>✓ Analytics dashboard</li></ul>
+      <a href="#" class="price-cta">Start Free Trial</a>
+    </div>
+    <div class="price-card">
+      <div class="price-name">Enterprise</div>
+      <div class="price-amount">Custom<span> pricing</span></div>
+      <ul class="price-features"><li>✓ Everything in Pro</li><li>✓ Custom AI models</li><li>✓ API access</li><li>✓ White-label solution</li><li>✓ Dedicated support</li><li>✓ HIPAA compliance</li></ul>
+      <a href="#" class="price-cta">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-content">
+    <h2>Ready to Transform Healthcare with AI?</h2>
+    <p>Join thousands of healthcare professionals and patients using MediVision AI for smarter heart disease detection.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-white">Get Started Free →</a>
+      <a href="#" class="btn-ghost">▶ Watch Demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo"><div class="logo-icon">❤️</div>MediVision AI</a>
+      <p>AI-powered heart disease detection and medical image analysis platform. Transforming healthcare with AI.</p>
+    </div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="#">Features</a></li><li><a href="#">Pricing</a></li><li><a href="#">API Docs</a></li><li><a href="#">Integrations</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Blog</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Resources</h4><ul><li><a href="#">Documentation</a></li><li><a href="#">Help Center</a></li><li><a href="#">Community</a></li><li><a href="#">Status</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">HIPAA Compliance</a></li><li><a href="#">GDPR</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 MediVision AI. All rights reserved.</span>
+    <span class="footer-disclaimer">⚠️ AI results are for preliminary screening only. Always consult a healthcare professional.</span>
+  </div>
+</footer>
+
+</body>
+</html>
