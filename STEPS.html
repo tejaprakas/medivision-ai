@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediVision AI - Full Deployment Steps</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#020617;color:#F8FAFC;line-height:1.7;min-height:100vh;padding:2rem 1rem}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#2563EB,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
+.sub{color:#94A3B8;margin-bottom:2.5rem;font-size:1.05rem}
+.step{background:#0F172A;border:1px solid #1E293B;border-radius:20px;padding:2rem;margin:1.5rem 0;position:relative;overflow:hidden}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2563EB,#06B6D4)}
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.step-num{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2563EB,#06B6D4);color:white;font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-title{font-size:1.15rem;font-weight:700;color:#F8FAFC}
+.step-desc{color:#94A3B8;font-size:.9rem;margin-bottom:1rem}
+ol{padding-left:1.25rem;margin:.75rem 0}
+ol li{margin:.5rem 0;font-size:.9rem;color:#CBD5E1}
+ol li strong{color:#F8FAFC}
+code{background:#1E293B;border:1px solid #334155;padding:.15rem .4rem;border-radius:6px;font-size:.82rem;color:#06B6D4;font-family:'Courier New',monospace}
+pre{background:#020617;border:1px solid #1E293B;padding:1rem;border-radius:12px;overflow-x:auto;font-size:.8rem;margin:.75rem 0;color:#94A3B8}
+a{color:#06B6D4;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:.7rem 1.4rem;background:linear-gradient(135deg,#2563EB,#06B6D4);color:white;font-weight:600;border-radius:12px;text-decoration:none;font-size:.9rem;margin:.4rem .4rem .4rem 0;transition:all .3s;border:none;cursor:pointer}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,99,235,.3);text-decoration:none;color:white}
+.btn-outline{background:transparent;border:2px solid #1E293B;color:#94A3B8}
+.btn-outline:hover{border-color:#06B6D4;color:#06B6D4}
+.done{background:#052E16;border:1px solid #166534}
+.done .step-num{background:#166534}
+.done .step-title{color:#86EFAC}
+.warning{background:#451A03;border:1px solid #92400E}
+.warning .step-title{color:#FDE68A}
+.info{background:#082F49;border:1px solid #0C4A6E}
+.info .step-title{color:#7DD3FC}
+.checklist{list-style:none;padding:0;margin:.75rem 0}
+.checklist li{padding:.4rem 0;font-size:.9rem;color:#CBD5E1;display:flex;align-items:center;gap:8px}
+.checklist li::before{content:'☐';color:#64748B;font-size:1rem}
+.checklist li.done-item::before{content:'✅';}
+table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:.85rem}
+th,td{padding:.6rem .75rem;text-align:left;border-bottom:1px solid #1E293B}
+th{color:#64748B;font-weight:600;font-size:.75rem;text-transform:uppercase}
+.copy-btn{background:#1E293B;border:1px solid #334155;color:#94A3B8;padding:.3rem .6rem;border-radius:6px;font-size:.7rem;cursor:pointer;margin-left:auto}
+.copy-btn:hover{background:#334155;color:#F8FAFC}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🚀 Full Deployment — MediVision AI</h1>
+<p class="sub">Follow these 5 steps to deploy your complete platform online. All services are free.</p>
+
+<!-- STEP 1 -->
+<div class="step">
+<div class="step-header"><div class="step-num">1</div><div class="step-title">Create GitHub Repository</div></div>
+<ol>
+  <li>Go to <a href="https://github.com/new" target="_blank">github.com/new</a></li>
+  <li>Repository name: <code>medivision-ai</code></li>
+  <li>Set to <strong>Public</strong></li>
+  <li>Do NOT initialize with README (we already have one)</li>
+  <li>Click <strong>"Create repository"</strong></li>
+</ol>
+<div class="info" style="border-radius:12px;padding:1rem;margin-top:1rem">
+  <strong>After creating, copy the repo URL:</strong><br>
+  <code>https://github.com/YOUR_USERNAME/medivision-ai.git</code>
+</div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step">
+<div class="step-header"><div class="step-num">2</div><div class="step-title">Push Code to GitHub</div></div>
+<p class="step-desc">Open terminal in your project folder and run:</p>
+<pre>cd C:\Users\tejap\AppData\Local\hermes\projects\medivision-ai
+
+git remote add origin https://github.com/YOUR_USERNAME/medivision-ai.git
+git branch -M main
+git push -u origin main</pre>
+<p class="step-desc">Enter your GitHub username and Personal Access Token when prompted.</p>
+<div class="warning" style="border-radius:12px;padding:1rem;margin-top:1rem">
+  <strong>Need a token?</strong> Go to GitHub → Settings → Developer Settings → Personal Tokens → Tokens (classic) → Generate new token. Select "repo" scope.
+</div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step">
+<div class="step-header"><div class="step-num">3</div><div class="step-title">Deploy Frontend to Vercel</div></div>
+<ol>
+  <li>Go to <a href="https://vercel.com/signup" target="_blank">vercel.com/signup</a> — sign up with GitHub</li>
+  <li>Click <strong>"Add New Project"</strong></li>
+  <li>Import your <code>medivision-ai</code> repo</li>
+  <li>Configure project:
+    <ul style="margin-top:.5rem;padding-left:1.25rem">
+      <li>Framework Preset: <strong>Next.js</strong></li>
+      <li>Root Directory: <strong>frontend</strong></li>
+      <li>Build Command: <code>npm run build</code></li>
+    </ul>
+  </li>
+  <li>Add environment variable:
+    <table><tr><th>Name</th><th>Value</th></tr>
+    <tr><td><code>NEXT_PUBLIC_API_URL</code></td><td><code>https://medivision-backend.onrender.com</code></td></tr>
+    </table>
+  </li>
+  <li>Click <strong>"Deploy"</strong> — wait 2-3 minutes</li>
+</ol>
+<a href="https://vercel.com/new" target="_blank" class="btn">▲ Deploy to Vercel</a>
+</div>
+
+<!-- STEP 4 -->
+<div class="step">
+<div class="step-header"><div class="step-num">4</div><div class="step-title">Deploy Backend to Render</div></div>
+<ol>
+  <li>Go to <a href="https://render.com" target="_blank">render.com</a> — sign up free</li>
+  <li>Click <strong>"New +"</strong> → <strong>"Web Service"</strong></li>
+  <li>Connect your <code>medivision-ai</code> repo</li>
+  <li>Configure:
+    <table><tr><th>Setting</th><th>Value</th></tr>
+    <tr><td>Name</td><td><code>medivision-backend</code></td></tr>
+    <tr><td>Root Directory</td><td><code>backend</code></td></tr>
+    <tr><td>Runtime</td><td><code>Python 3</code></td></tr>
+    <tr><td>Build Command</td><td><code>pip install -r requirements.txt</code></td></tr>
+    <tr><td>Start Command</td><td><code>uvicorn app.main:app --host 0.0.0.0 --port $PORT</code></td></tr>
+    </table>
+  </li>
+  <li>Add environment variables:
+    <table><tr><th>Key</th><th>Value</th></tr>
+    <tr><td><code>MONGODB_URL</code></td><td>Your MongoDB connection string</td></tr>
+    <tr><td><code>SECRET_KEY</code></td><td>Any random 32+ char string</td></tr>
+    <tr><td><code>CORS_ORIGINS</code></td><td>Your Vercel URL (after step 3)</td></tr>
+    <tr><td><code>DEBUG</code></td><td><code>false</code></td></tr>
+    </table>
+  </li>
+  <li>Click <strong>"Create Web Service"</strong> — wait 5-10 minutes</li>
+</ol>
+<a href="https://dashboard.render.com/web/new" target="_blank" class="btn">🚀 Deploy to Render</a>
+</div>
+
+<!-- STEP 5 -->
+<div class="step">
+<div class="step-header"><div class="step-num">5</div><div class="step-title">Setup MongoDB Atlas (Free)</div></div>
+<ol>
+  <li>Go to <a href="https://mongodb.com/atlas/register" target="_blank">mongodb.com/atlas</a> — sign up free</li>
+  <li>Create a <strong>FREE M0 cluster</strong> (AWS, closest region)</li>
+  <li>Create a database user:
+    <ul style="margin-top:.5rem;padding-left:1.25rem">
+      <li>Username: <code>medivision</code></li>
+      <li>Password: <strong>Generate a secure password</strong> (save it!)</li>
+    </ul>
+  </li>
+  <li>Go to <strong>Network Access</strong> → Add IP: <code>0.0.0.0/0</code> (allow all)</li>
+  <li>Go to <strong>Database</strong> → Connect → Connect your application</li>
+  <li>Copy the connection string, replace <code>&lt;password&gt;</code> with your actual password</li>
+  <li>Add this as <code>MONGODB_URL</code> in Render environment variables</li>
+</ol>
+<a href="https://mongodb.com/atlas/register" target="_blank" class="btn">🗄️ Create MongoDB</a>
+</div>
+
+<!-- DONE -->
+<div class="step done">
+<div class="step-header"><div class="step-num">✅</div><div class="step-title">You're Live!</div></div>
+<ul class="checklist">
+  <li>Frontend: <code>your-project.vercel.app</code></li>
+  <li>Backend: <code>medivision-backend.onrender.com</code></li>
+  <li>API Docs: <code>medivision-backend.onrender.com/api/v1/docs</code></li>
+  <li>Health Check: <code>medivision-backend.onrender.com/api/v1/health</code></li>
+</ul>
+</div>
+
+<div style="text-align:center;margin-top:2rem">
+  <a href="https://github.com/new" target="_blank" class="btn">1️⃣ Create GitHub Repo</a>
+  <a href="https://vercel.com/new" target="_blank" class="btn">2️⃣ Deploy Frontend</a>
+  <a href="https://dashboard.render.com/web/new" target="_blank" class="btn">3️⃣ Deploy Backend</a>
+  <a href="https://mongodb.com/atlas/register" target="_blank" class="btn">4️⃣ Setup Database</a>
+</div>
+
+</div>
+</body>
+</html>
